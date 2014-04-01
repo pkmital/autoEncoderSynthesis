@@ -1,0 +1,5 @@
+ofxOsc
+ofxXmlSettings
+ofxOpenCv2461
+ofxPostProcessing
+ofxUI
