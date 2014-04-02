@@ -183,16 +183,18 @@ void testApp::audioIn(float *buf, int size, int ch){
 
 //--------------------------------------------------------------
 void testApp::audioOut(float *buf, int size, int ch){
+    pkm::Mat output(1, size, buf, false);
+    
     // get current buffer
     waveform.readFrameAndIncrement(buf);
     recorder->insertFrame(buf);
     recorder->copyAlignedData(fft_frame.data);
-    vDSP_vclr(buf, 1, size);
+    output.clear();
     
     // apply fft
     bool b_apply_window = true;
     fft->forward(0, fft_frame.data, mags.data, phases.data, b_apply_window);
-    vDSP_vclr(fft_frame.data, 1, n_fft_size);
+    fft_frame.clear();
     
     // into activation layer
     mags.GEMM(W, activationLayer);
@@ -212,21 +214,22 @@ void testApp::audioOut(float *buf, int size, int ch){
     mags.add(vb);
     
     // add previous overlap
-    vDSP_vadd(fft_frame.data, 1, overlap_frame.data, 1, fft_frame.data, 1, n_fft_size - size);
+    fft_frame.colRange(0, n_fft_size - size, false).copy(overlap_frame);
     
     // do inverse
     fft->inverse(0, fft_frame.data, mags.data, phases.data, b_apply_window);
-    cblas_scopy(size, fft_frame.data, 1, buf, 1);
+    output.copy(fft_frame.colRange(0, size, false));
     
     // store overlap
-    cblas_scopy(n_fft_size - size, fft_frame.data + size, 1, overlap_frame.data, 1);
+    overlap_frame.copy(fft_frame.colRange(size, n_fft_size));
 }
 
 #pragma mark key_callbacks
 
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
-
+    if(key == '0')
+        weights.setTo(0);
 }
 
 //--------------------------------------------------------------
