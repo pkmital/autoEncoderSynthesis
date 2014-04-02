@@ -43,12 +43,12 @@ void testApp::setup(){
     
     // globals
     width = 1000;
-    height = 100;
+    height = 300;
     n_sample_rate = 44100;
     n_buffer_size = 512;
     
     // reshape window size
-    ofSetWindowShape(width, height * 2);
+    ofSetWindowShape(width, height * 2.25);
     
     // setup drawing of the waveform
     waveform.setup(0,                   // x position to draw
@@ -56,7 +56,7 @@ void testApp::setup(){
                    width,               // ui drawing width
                    height,              // height
                    n_buffer_size,       // each audio callback frame
-                   1.0);                // drawing resolution (0.5 - 2.0)
+                   1.5);                // drawing resolution (0.5 - 2.0)
     waveform.setLoopRegion(true);
 
     // load up an audiofile
@@ -128,6 +128,16 @@ void testApp::draw(){
     
     waveform.draw();
     gui->draw();
+    
+    // draw the activation layer (before being interactively weighted)
+    ofBeginShape();
+    int slider_width = width / n_neurons;
+    int y_offset = height * 1.75;
+    for (int i = 0; i < n_neurons; i++) {
+        int x_offset = 3 + i * slider_width + slider_width / 2.0;
+        ofVertex(x_offset, y_offset - activationLayer[i] / 10.0);
+    }
+    ofEndShape();
 }
 
 
@@ -135,7 +145,7 @@ void testApp::draw(){
 
 //--------------------------------------------------------------
 void testApp::initializeGUI(){
-    gui = new ofxUICanvas(0,height,width,height);
+    gui = new ofxUICanvas(0,height*1.25,width,height);
     
     if (!gui->setFont(ofToDataPath("helvetica-light-normal.ttf")))
     {
