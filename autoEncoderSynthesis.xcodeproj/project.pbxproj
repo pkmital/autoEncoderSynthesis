@@ -47,6 +47,7 @@
 		89EA42C418EB2C6700C6652F /* pkmEXTAudioFileWriter.h in Sources */ = {isa = PBXBuildFile; fileRef = 8979320618EB24F900245784 /* pkmEXTAudioFileWriter.h */; };
 		89EA42C518EB2C6700C6652F /* pkmEXTAudioFileWriter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8979320718EB24F900245784 /* pkmEXTAudioFileWriter.mm */; };
 		89EA42C618EB2C8900C6652F /* pkmMatrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8979324018EB24FA00245784 /* pkmMatrix.cpp */; };
+		89EA42E718EBB3EC00C6652F /* pkmCircularRecorder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 89EA42E518EBB3EC00C6652F /* pkmCircularRecorder.cpp */; };
 		8F5205AEF8861EF234F0651A /* ofxOscSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 81967292BFC87A0144BD32C6 /* ofxOscSender.cpp */; };
 		A29D8C96AE042ECEAA1BD4F3 /* NetworkingUtilsWin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A5B1FAD3F30C8065C396ACB /* NetworkingUtilsWin.cpp */; };
 		AB3CCC144428A2824A2F91B5 /* ofxCvFloatImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 458B1C74E2F2473C67536DE7 /* ofxCvFloatImage.cpp */; };
@@ -266,6 +267,8 @@
 		89EA42BD18EB2ACE00C6652F /* pkmAudioWaveform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = pkmAudioWaveform.h; path = ../../../../pkm/pkmAudio/pkmAudioWaveform.h; sourceTree = "<group>"; };
 		89EA42BF18EB2BBB00C6652F /* pkmAudioWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pkmAudioWindow.cpp; path = ../../../../pkm/pkmAudio/pkmAudioWindow.cpp; sourceTree = "<group>"; };
 		89EA42C018EB2BBB00C6652F /* pkmAudioWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pkmAudioWindow.h; path = ../../../../pkm/pkmAudio/pkmAudioWindow.h; sourceTree = "<group>"; };
+		89EA42E518EBB3EC00C6652F /* pkmCircularRecorder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pkmCircularRecorder.cpp; path = ../../../../pkm/pkmRecorder/pkmCircularRecorder.cpp; sourceTree = "<group>"; };
+		89EA42E618EBB3EC00C6652F /* pkmCircularRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pkmCircularRecorder.h; path = ../../../../pkm/pkmRecorder/pkmCircularRecorder.h; sourceTree = "<group>"; };
 		8B30E93FD3D3475EED522A0E /* ofxOscBundle.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxOscBundle.h; path = ../../../addons/ofxOsc/src/ofxOscBundle.h; sourceTree = SOURCE_ROOT; };
 		8B4BDDDEA8F06BF4E8054059 /* ocl.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ocl.hpp; path = ../../../addons/ofxOpenCv2461/libs/opencv/include/opencv2/ocl/ocl.hpp; sourceTree = SOURCE_ROOT; };
 		8C75AFC8774A62495DD53464 /* ofxOscReceiver.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxOscReceiver.h; path = ../../../addons/ofxOsc/src/ofxOscReceiver.h; sourceTree = SOURCE_ROOT; };
@@ -802,6 +805,8 @@
 		89EA42BE18EB2AD100C6652F /* pkmAudio */ = {
 			isa = PBXGroup;
 			children = (
+				89EA42E518EBB3EC00C6652F /* pkmCircularRecorder.cpp */,
+				89EA42E618EBB3EC00C6652F /* pkmCircularRecorder.h */,
 				89EA42BF18EB2BBB00C6652F /* pkmAudioWindow.cpp */,
 				89EA42C018EB2BBB00C6652F /* pkmAudioWindow.h */,
 				89EA42BD18EB2ACE00C6652F /* pkmAudioWaveform.h */,
@@ -1276,6 +1281,7 @@
 				89EA42C318EB2C6700C6652F /* pkmEXTAudioFileReader.mm in Sources */,
 				89EA42C418EB2C6700C6652F /* pkmEXTAudioFileWriter.h in Sources */,
 				89EA42C518EB2C6700C6652F /* pkmEXTAudioFileWriter.mm in Sources */,
+				89EA42E718EBB3EC00C6652F /* pkmCircularRecorder.cpp in Sources */,
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* testApp.mm in Sources */,
 				72A929D3561B8232A182ABFC /* ofxOscBundle.cpp in Sources */,

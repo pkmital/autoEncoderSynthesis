@@ -33,6 +33,7 @@
 #include "pkmFFT.h"
 #include "pkmEXTAudioFileReader.h"
 #include "pkmAudioWaveform.h"
+#include "pkmCircularRecorder.h"
 #include "ofxUI.h"
 
 //--------------------------------------------------------------
@@ -71,6 +72,9 @@ public:
 private:
     //--------------------------------------------------------------
     pkmAudioWaveform waveform;
+    pkmCircularRecorder *recorder;
+    pkm::Mat fft_frame, overlap_frame;
+    int n_fft_size;
     
     //--------------------------------------------------------------
     pkmFFT *fft;

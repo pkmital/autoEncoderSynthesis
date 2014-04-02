@@ -31,6 +31,9 @@
 //--------------------------------------------------------------
 testApp::~testApp(){
     delete fft;
+    delete recorder;
+    
+    b_setup = false;
 }
 
 //--------------------------------------------------------------
@@ -42,7 +45,7 @@ void testApp::setup(){
     width = 1000;
     height = 100;
     n_sample_rate = 44100;
-    n_buffer_size = 2048;
+    n_buffer_size = 512;
     
     // reshape window size
     ofSetWindowShape(width, height * 2);
@@ -85,10 +88,16 @@ void testApp::setup(){
     hb.setTranspose();
     vb.setTranspose();
     
+    // setup ring buffer
+    n_fft_size = 2048;
+    fft_frame = pkm::Mat(1, n_fft_size, 0.0f);
+    overlap_frame = pkm::Mat(1, n_fft_size - n_buffer_size, 0.0f);
+    recorder = new pkmCircularRecorder(n_fft_size, n_buffer_size);
+    
     // setup fft stuff
-    fft = new pkmFFT(n_buffer_size);
-    mags = pkm::Mat(1, n_buffer_size / 2 + 1);
-    phases = pkm::Mat(1, n_buffer_size / 2 + 1);
+    fft = new pkmFFT(n_fft_size);
+    mags = pkm::Mat(1, n_fft_size/2 + 1);
+    phases = pkm::Mat(1, n_fft_size/2 + 1);
     
     // setup audio callbacks
     ofSoundStreamSetup(1,               // output channels
@@ -166,11 +175,14 @@ void testApp::audioIn(float *buf, int size, int ch){
 void testApp::audioOut(float *buf, int size, int ch){
     // get current buffer
     waveform.readFrameAndIncrement(buf);
+    recorder->insertFrame(buf);
+    recorder->copyAlignedData(fft_frame.data);
+    vDSP_vclr(buf, 1, size);
     
     // apply fft
     bool b_apply_window = true;
-    fft->forward(0, buf, mags.data, phases.data, b_apply_window);
-    vDSP_vclr(buf, 1, size);
+    fft->forward(0, fft_frame.data, mags.data, phases.data, b_apply_window);
+    vDSP_vclr(fft_frame.data, 1, n_fft_size);
     
     // into activation layer
     mags.GEMM(W, activationLayer);
@@ -188,7 +200,16 @@ void testApp::audioOut(float *buf, int size, int ch){
     // back out
     activationLayer.GEMM(W_prime, mags);
     mags.add(vb);
-    fft->inverse(0, buf, mags.data, phases.data, false);
+    
+    // add previous overlap
+    vDSP_vadd(fft_frame.data, 1, overlap_frame.data, 1, fft_frame.data, 1, n_fft_size - size);
+    
+    // do inverse
+    fft->inverse(0, fft_frame.data, mags.data, phases.data, b_apply_window);
+    cblas_scopy(size, fft_frame.data, 1, buf, 1);
+    
+    // store overlap
+    cblas_scopy(n_fft_size - size, fft_frame.data + size, 1, overlap_frame.data, 1);
 }
 
 #pragma mark key_callbacks
