@@ -159,7 +159,7 @@ void testApp::initializeGUI(){
 void testApp::guiEvent(ofxUIEventArgs &e){
     string name = e.widget->getName();
     ofxUISlider *slider = (ofxUISlider *)e.widget;
-    weights[ofToInt(name)] = slider->getValue();
+    weights[ofToInt(name)] = slider->getScaledValue();
     weights.print();
 }
 
